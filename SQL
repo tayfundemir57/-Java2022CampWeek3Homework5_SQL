@@ -1,0 +1,103 @@
+-- Select : Datayı seç , * ( Yıldız Tüm Kolonlarıyla Demek ) from ; nereden hangi tablodan demek. Fromdan sonra --customers tablosundan demektir.
+ 
+--Select ContactName Adi,CompanyName Sirketadi,City Sehir from Customers ingilizcelerinin yanına yazdığımız Türkçe isimler Allianz
+--		kullanımı demektir. Çalıştırıldığında başlıklar Türkçe isimler ile gelir.
+
+-- Select * from Customers where (koşul demek) City = 'Londan' dediğimiz zaman City içerisindeki şehri Londra olanları getir demek.
+
+--Sql büyük küçük harf duyarsızdır hata vermez ( Case insensitive ) Yani tAyfUN olması ile tayfun TAYFUN olması aynıdır.
+
+-- and : Ve , or : Veya , < : Küçük , > : Büyük , <> : Farklı olan
+
+-- order by = Sırala demektir.
+
+-- asc = ascending = artan demektir. 
+-- desc = descenging = azalan demektir.
+-- Select count(*) from Products // Tüm satırları sayarak sayısını ver. count adet demektir.
+-- Select count(*) from Products where CategoryID=2 // Product içerisindeki elemanlardan categoryId'si 2 olanların sayısını ver demektir.
+-- Select count(*) Adet from Products where CategoryID=2 // Adet ekran çıktısında gözükecektir.
+-- Select categoryID from Products group by CategoryId // -- datalarımın içine bak bütün kategorileri bana tekrar etmeyecek şekilde
+--		listeleme demektir. gruop bye yaptığımızda aslında her bir grup için arka planda bir tablo oluşturuluyormuş gibi düşünebilirsin.
+-- Select categoryID, count(*) from Products group by CategoryId // group by dediğimiz için arka planda CategoryId her bir grup için ayrı ayrı hesaplanıyor.
+-- Select categoryID,count(*) from Products group by CategoryId having count(*)<10 // -- Yönetim bana ürün sayısı 10'dan az olan kategori 
+--   listele, ben o kategorilere yeni ürün ekleyerek sistemi iyileştirmek istiyorum. having kümülatif dataya yazılır.. ( categoryID,count(*) )
+-- Select categoryID,count(*) from Products where UnitPrice>20 group by CategoryId having count(*)<10 // Öncekik where kısmı çalışarak,
+--   fiyatı 20 den fazla olan ve sayısı 10'dan az olan değerleri getirdik.
+-- Select * from Products inner join Categories  // 
+
+
+
+Select ContactName,CompanyName,City from Customers
+
+Select * from Customers where City = 'London'
+
+Select * from Products where CategoryID=1 or CategoryID=3
+
+Select * from Products where CategoryID=1 and UnitPrice>=10
+
+Select * from Products order by ProductName
+ 
+Select * from Products order by UnitPrice asc
+
+Select * from Products order by UnitPrice desc
+
+Select * from Products where categoryId=1 order by UnitPrice desc
+
+Select count(*) from Products 
+
+Select count(*) from Products where CategoryID=2
+
+Select count(*) Adet from Products where CategoryID=2
+
+Select categoryID from Products group by CategoryId
+
+Select categoryID,count(*) from Products group by CategoryId
+
+Select categoryID,count(*) from Products group by CategoryId having count(*)<10
+
+Select categoryID,count(*) from Products where UnitPrice>20 group by CategoryId having count(*)<10
+
+
+-- JOINLER.. : Birleştirmek demektir..
+
+-- Yıldız tüm kolonları  getirirken...
+Select *
+from Products inner join Categories 
+on Products.CategoryID = Categories.CategoryID
+
+-- Yıldız koymadığımızda ve istediğimiz kolanları seçtiğimizde onlar ekranda görülecektir.
+Select Products.ProductID,Products.CategoryID,Products.ProductName,Products.UnitPrice,Categories.CategoryName,Categories.CategoryID
+from Products inner join Categories -- Products ve Categories tablolarını birleştirerek getir.
+on Products.CategoryID = Categories.CategoryID -- Product categoryıdsiyle categories categoryId'si eşit olanları yan yana getir.
+
+Select Products.ProductID,Products.CategoryID,Products.ProductName,Products.UnitPrice,Categories.CategoryName,Categories.CategoryID
+from Products inner join Categories 
+on Products.CategoryID = Categories.CategoryID 
+where Products.UnitPrice>10
+
+-- innet join sadece iki tabloda eşleşenleri bir araya getirir. Eşleşmeyen data varsa getirmez..
+
+Select * from Products p inner join [Order Details] od
+on p.ProductID = od.ProductID 
+
+Select * from Products p left join [Order Details] od -- left ( sol ) solda olupta sağda olmayanlarıda getir demektir.
+on p.ProductID = od.ProductID 
+
+Select * from Products p right join [Order Details] od -- right ( sağ ) sağda olupta solda olmayanlarıda getir demektir.
+on p.ProductID = od.ProductID 
+
+
+Select * from Customers c inner join Orders o
+on c.CustomerID = o.CustomerID
+
+Select * from Customers c left join Orders o
+on c.CustomerID = o.CustomerID
+where o.CustomerID is null -- Hiç alışveriş yapmamış müşteriler gelecektir.
+
+
+Select * from Products p inner join [Order Details] od 
+on p.ProductID = od.ProductID
+inner join Orders o
+on o.OrderID = od.OrderID
+
+-- DTO Data Transformatin object..
